@@ -1,0 +1,221 @@
+using System;
+
+namespace final
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+
+            dprestamos prestamos = new dprestamos();
+
+            string ENT = "";
+            bool MENU = true;
+
+            while (MENU)
+            {
+                Console.WriteLine("SISTEMA CALCULADORA DE PRÉSTAMOS \n");
+                Console.WriteLine("1-LLENAR SOLICITUD");
+                Console.WriteLine("2-TABLA DE AMORTIZACION");
+                Console.WriteLine("3-SALIR");
+                ENT = Console.ReadLine();
+
+                switch (ENT)
+                {
+
+
+                    case "1":
+                        Console.Clear();
+                        prestamos.datos();
+                        break;
+
+                    case "2":
+                        Console.Clear();
+                        prestamos.tabla();
+                        break;
+
+                    case "3":
+                        MENU = false;
+                        break;
+
+                }
+
+            }
+
+        }
+    }
+}
+
+
+class dprestamos
+{
+
+
+    public float pago, intpagado, cappagado, monto, tanual, interemensual;
+    public int enturno, Plazo, i;
+    public string cliente;
+    public void datos()
+    {
+
+        Console.Clear();
+        cliente = leerbeneficiario("NOMBRE DEL CLIENTE: ");
+        monto = LeerMonto("CANTIDAD A SOLICITAR: ");
+        tanual = LeerInteres("TASA ANUAL: ");
+        Plazo = LeerPlazo("MESES A PAGAR: ");
+
+
+
+        interemensual = (tanual / 100) / 12;
+
+
+        Console.WriteLine("\n");
+        pago = interemensual + 1;
+        pago = (float)Math.Pow(pago, Plazo);
+        pago = pago - 1;
+        pago = interemensual / pago;
+        pago = interemensual + pago;
+        pago = monto * pago;
+
+        Console.WriteLine("TOTAL A PAGAR MENSUAL: " + Math.Round(pago));
+        Console.WriteLine("SELECCIONE LA 2 PARA GENERAL TABLA");
+        Console.WriteLine("\n");
+        Console.WriteLine("PRESIONE UNA TECLA PARA SALIR");
+        Console.ReadKey();
+        Console.Clear();
+
+    }
+
+    public static string leerbeneficiario(string msg)
+    {
+        var Nombre = "";
+
+
+        Console.WriteLine(msg);
+
+        try
+        {
+            Nombre = Console.ReadLine();
+        }
+        catch (Exception)
+        {
+
+            Nombre = leerbeneficiario(msg);
+
+        }
+
+        return Nombre;
+    }
+    public static int LeerMonto(string msg)
+    {
+        var monto = 0;
+
+        Console.WriteLine(msg);
+
+        try
+        {
+            monto = int.Parse(Console.ReadLine());
+        }
+        catch (Exception)
+        {
+
+            monto = LeerMonto(msg);
+
+        }
+
+        return monto;
+    }
+    public static int LeerPlazo(string msg)
+    {
+        var plazos = 0;
+
+        Console.WriteLine(msg);
+
+        try
+        {
+            plazos = int.Parse(Console.ReadLine());
+        }
+        catch (Exception)
+        {
+
+            plazos = LeerMonto(msg);
+
+        }
+
+        return plazos;
+    }
+    public static int LeerInteres(string msg)
+    {
+        var Interes = 0;
+
+        Console.WriteLine(msg);
+
+        try
+        {
+            Interes = int.Parse(Console.ReadLine());
+        }
+        catch (Exception)
+        {
+
+            Interes = LeerMonto(msg);
+
+        }
+
+        return Interes;
+    }
+    public void tabla()
+    {
+        Console.Clear();
+        Console.WriteLine("CLIENTE: " + cliente);
+        Console.WriteLine("MONTO: " + monto);
+        Console.WriteLine("TASA: " + tanual + " %");
+        Console.WriteLine("TIEMPO: " + Plazo + " Meses");
+        Console.WriteLine("TOTAL EN CUENTA: " + Math.Round(pago));
+        Console.WriteLine("--------------------------------------");
+        enturno = 1;
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.Write(" NUMERO DE PAGO \t");
+        Console.Write("PAGO \t\t");
+        Console.Write("INTERESES QUE HA PAGADO \t\t");
+        Console.Write("CAPITAL QUE HA PAGADO \t\t");
+        Console.Write("MONTO PRESTAMO \t");
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.Write("\t0");
+        Console.WriteLine("\t\t\t\t\t\t\t\t\t\t\t{0}", Math.Round(monto));
+
+
+        for (i = 1; i <= Plazo; i++)
+        {
+
+
+            Console.Write("\t{0}\t\t", enturno);
+
+
+            Console.Write("{0}\t", pago);
+
+
+            intpagado = interemensual * monto;
+            Console.Write("{0}\t\t", intpagado);
+
+
+            cappagado = pago - intpagado;
+            Console.Write("\t{0}\t", cappagado);
+
+
+            monto = monto - cappagado;
+            Console.Write("\t{0}\t", Math.Round(monto));
+
+            enturno = enturno + 1;
+            Console.WriteLine();
+
+        }
+
+        Console.WriteLine("\n");
+        Console.WriteLine("PRESIONE UNA TECLA PARA VOLVER AL MENU");
+        Console.ReadKey();
+        Console.Clear();
+
+    }
+
+}
